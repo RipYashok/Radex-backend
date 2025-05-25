@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - DATABASE_URL=postgresql://postgres:5504@host.docker.internal:5432/users
+      - FORWARDED_ALLOW_IPS=*
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./model:/app/model
+      - ./requirements.txt:/app/requirements.txt
+      - ./server:/app/server
+      - ./server/images:/app/server/images
+      - ./server/reports:/app/server/reports
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/docs"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    command: uvicorn server.main:app --host 0.0.0.0 --port 8000 --reload --proxy-headers --forwarded-allow-ips='*'
+
+  serveo:
+    build:
+      context: .
+      dockerfile: Dockerfile.serveo
+    depends_on:
+      - api
+    networks:
+      - app-network
+    restart: always
+    volumes:
+      - ~/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+
+networks:
+  app-network:
+    driver: bridge 

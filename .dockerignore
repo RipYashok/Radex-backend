@@ -1,0 +1,16 @@
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.env
+.venv
+input/*
+output/*
+!input/.gitkeep
+!output/.gitkeep 
+id_rsa

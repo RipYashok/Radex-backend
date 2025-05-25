@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.py[cod]
+.env
+.venv
+venv/
+ENV/
+
+# Project specific
+server/images/*
+server/reports/*
+
+# Logs
+*.log
+
+# SSH keys
+id_rsa
+id_rsa.pub

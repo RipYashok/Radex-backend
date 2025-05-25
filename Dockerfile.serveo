@@ -1,0 +1,9 @@
+FROM alpine:latest
+
+RUN apk add --no-cache openssh-client
+
+# Копируем скрипт запуска туннеля
+COPY start-serveo.sh /usr/local/bin/start-serveo.sh
+RUN chmod +x /usr/local/bin/start-serveo.sh
+
+ENTRYPOINT ["/usr/local/bin/start-serveo.sh"]
