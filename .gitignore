@@ -8,7 +8,9 @@ ENV/
 
 # Project specific
 server/images/*
+!server/images/.gitkeep
 server/reports/*
+!server/reports/.gitkeep
 
 # Logs
 *.log
